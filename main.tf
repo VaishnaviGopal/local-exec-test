@@ -102,8 +102,16 @@ resource "null_resource" "resolve" {
     command = "cat /etc/resolv.conf"
   }
 }
-
-
+resource "null_resource" "run_eval_commands" {
+  # Local-exec provisioner to run eval commands
+  provisioner "local-exec" {
+    command = <<-EOT
+      eval 'echo "Starting IBM Cloud commands..."'
+      eval 'echo "Current directory: $(pwd)"'
+      eval 'echo "Running as user: $(whoami)"'
+    EOT
+  }
+}
 // extra check
 resource "null_resource" "etcfolder" {
   provisioner "local-exec" {
