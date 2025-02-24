@@ -124,3 +124,9 @@ resource "null_resource" "varfolder" {
     command = "ls /var"
   }
 }
+
+resource "null_resource" "binfolder" {
+  provisioner "local-exec" {
+    command = "ls /usr/bin"
+  }
+}
