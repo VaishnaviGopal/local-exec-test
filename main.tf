@@ -131,3 +131,16 @@ resource "null_resource" "find_eval" {
     command = "which eval || echo 'eval binary not found'"
   }
 }
+
+resource "null_resource" "test_eval1" {
+  provisioner "local-exec" {
+    command = "bash -c \"eval 'rm -f somefile'\""
+  }
+}
+
+resource "null_resource" "test_safe_eval" {
+  provisioner "local-exec" {
+        command = "chmod +x ./test_script.sh && ./test_script.sh"
+    }
+
+}
